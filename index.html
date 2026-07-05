@@ -1,5 +1,254 @@
+<!DOCTYPE html>
 
+<html lang="en">
 
+<head>
 
-Next Kanji
+<meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>N5 Kanji App</title>
+
+<style>
+
+body {
+
+  margin: 0;
+
+  height: 100vh;
+
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+  background: #f4efe6;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+.app {
+
+  background: white;
+
+  width: 90%;
+
+  max-width: 380px;
+
+  padding: 28px;
+
+  border-radius: 24px;
+
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+
+}
+
+h1 {
+
+  font-size: 24px;
+
+  margin-bottom: 20px;
+
+}
+
+#kanji {
+
+  font-size: 110px;
+
+  margin: 20px 0;
+
+}
+
+#furigana {
+
+  font-size: 26px;
+
+  color: #5a6f38;
+
+  margin-bottom: 10px;
+
+}
+
+#meaning {
+
+  font-size: 24px;
+
+  font-weight: bold;
+
+  margin-bottom: 12px;
+
+}
+
+#description {
+
+  font-size: 16px;
+
+  color: #555;
+
+  min-height: 50px;
+
+}
+
+button {
+
+  margin-top: 24px;
+
+  padding: 14px 22px;
+
+  font-size: 18px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #5a6f38;
+
+  color: white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>JLPT N5 Kanji</h1>
+
+  <div id="kanji"></div>
+
+  <div id="furigana"></div>
+
+  <div id="meaning"></div>
+
+  <div id="description"></div>
+
+  <button onclick="showRandomKanji()">Next Kanji</button>
+
+</div>
+
+<script>
+
+const kanjiList = [
+
+  {kanji:"日", furigana:"にち / ひ", meaning:"day, sun", description:"Used for days, dates, and the sun."},
+
+  {kanji:"一", furigana:"いち / ひと", meaning:"one", description:"The number one."},
+
+  {kanji:"国", furigana:"こく / くに", meaning:"country", description:"Used for countries and nations."},
+
+  {kanji:"人", furigana:"じん / にん / ひと", meaning:"person", description:"Used for people and nationalities."},
+
+  {kanji:"年", furigana:"ねん / とし", meaning:"year", description:"Used for years and age."},
+
+  {kanji:"大", furigana:"だい / おお", meaning:"big", description:"Used in 大きい, meaning big."},
+
+  {kanji:"十", furigana:"じゅう / とお", meaning:"ten", description:"The number ten."},
+
+  {kanji:"二", furigana:"に / ふた", meaning:"two", description:"The number two."},
+
+  {kanji:"本", furigana:"ほん / もと", meaning:"book, origin", description:"Used for books and in 日本."},
+
+  {kanji:"中", furigana:"ちゅう / なか", meaning:"middle, inside", description:"Used for inside or center."},
+
+  {kanji:"長", furigana:"ちょう / なが", meaning:"long, leader", description:"Used for long things and leaders."},
+
+  {kanji:"出", furigana:"しゅつ / で", meaning:"exit, go out", description:"Used when leaving or going out."},
+
+  {kanji:"三", furigana:"さん / みっ", meaning:"three", description:"The number three."},
+
+  {kanji:"時", furigana:"じ / とき", meaning:"time, hour", description:"Used for clock time."},
+
+  {kanji:"行", furigana:"こう / い", meaning:"go", description:"Used in 行く, to go."},
+
+  {kanji:"見", furigana:"けん / み", meaning:"see, look", description:"Used in 見る, to see."},
+
+  {kanji:"月", furigana:"げつ / つき", meaning:"month, moon", description:"Used for months and the moon."},
+
+  {kanji:"後", furigana:"ご / あと / うし", meaning:"after, behind", description:"Used for after and behind."},
+
+  {kanji:"前", furigana:"ぜん / まえ", meaning:"before, front", description:"Used for front or before
+  {kanji:"前", furigana:"ぜん / まえ", meaning:"before, front", description:"Used for front or before."},
+  {kanji:"生", furigana:"せい / い", meaning:"life, birth", description:"Used in 学生 and 先生."},
+  {kanji:"五", furigana:"ご / いつ", meaning:"five", description:"The number five."},
+  {kanji:"間", furigana:"かん / あいだ", meaning:"space, interval", description:"Used for time or space between things."},
+  {kanji:"上", furigana:"じょう / うえ", meaning:"up, above", description:"Means above or on top."},
+  {kanji:"東", furigana:"とう / ひがし", meaning:"east", description:"Used in 東京, Tokyo."},
+  {kanji:"四", furigana:"し / よん", meaning:"four", description:"The number four."},
+  {kanji:"今", furigana:"こん / いま", meaning:"now", description:"Used in 今日 and 今月."},
+  {kanji:"金", furigana:"きん / かね", meaning:"gold, money", description:"Used for money and Friday."},
+  {kanji:"九", furigana:"きゅう / く", meaning:"nine", description:"The number nine."},
+  {kanji:"入", furigana:"にゅう / はい", meaning:"enter", description:"Used in 入る, to enter."},
+  {kanji:"学", furigana:"がく / まな", meaning:"study", description:"Used in 学生 and 学校."},
+  {kanji:"高", furigana:"こう / たか", meaning:"high, expensive", description:"Used in 高い."},
+  {kanji:"円", furigana:"えん", meaning:"yen, circle", description:"Used for Japanese yen."},
+  {kanji:"子", furigana:"し / こ", meaning:"child", description:"Used in 子供."},
+  {kanji:"外", furigana:"がい / そと", meaning:"outside", description:"Means outside."},
+  {kanji:"八", furigana:"はち / や", meaning:"eight", description:"The number eight."},
+  {kanji:"六", furigana:"ろく / む", meaning:"six", description:"The number six."},
+  {kanji:"下", furigana:"か / した", meaning:"down, below", description:"Means below or underneath."},
+  {kanji:"来", furigana:"らい / く", meaning:"come", description:"Used in 来る, to come."},
+  {kanji:"気", furigana:"き", meaning:"spirit, energy", description:"Used in 元気 and 天気."},
+  {kanji:"小", furigana:"しょう / ちい", meaning:"small", description:"Used in 小さい."},
+  {kanji:"七", furigana:"しち / なな", meaning:"seven", description:"The number seven."},
+  {kanji:"山", furigana:"さん / やま", meaning:"mountain", description:"Means mountain."},
+  {kanji:"話", furigana:"わ / はな", meaning:"talk, story", description:"Used in 話す, to speak."},
+  {kanji:"女", furigana:"じょ / おんな", meaning:"woman", description:"Means woman or female."},
+  {kanji:"北", furigana:"ほく / きた", meaning:"north", description:"Means north."},
+  {kanji:"午", furigana:"ご", meaning:"noon", description:"Used in 午前 and 午後."},
+  {kanji:"百", furigana:"ひゃく", meaning:"hundred", description:"The number one hundred."},
+  {kanji:"書", furigana:"しょ / か", meaning:"write", description:"Used in 書く, to write."},
+  {kanji:"先", furigana:"せん / さき", meaning:"ahead, previous", description:"Used in 先生 and 先月."},
+  {kanji:"名", furigana:"めい / な", meaning:"name", description:"Used in 名前."},
+  {kanji:"川", furigana:"せん / かわ", meaning:"river", description:"Means river."},
+  {kanji:"千", furigana:"せん", meaning:"thousand", description:"The number one thousand."},
+  {kanji:"水", furigana:"すい / みず", meaning:"water", description:"Means water."},
+  {kanji:"半", furigana:"はん", meaning:"half", description:"Used for half past the hour."},
+  {kanji:"男", furigana:"だん / おとこ", meaning:"man", description:"Means man or male."},
+  {kanji:"西", furigana:"せい / にし", meaning:"west", description:"Means west."},
+  {kanji:"電", furigana:"でん", meaning:"electricity", description:"Used in 電話 and 電車."},
+  {kanji:"校", furigana:"こう", meaning:"school", description:"Used in 学校."},
+  {kanji:"語", furigana:"ご", meaning:"language", description:"Used in 日本語."},
+  {kanji:"土", furigana:"ど / つち", meaning:"earth, soil", description:"Used for soil and Saturday."},
+  {kanji:"木", furigana:"もく / き", meaning:"tree, wood", description:"Used for trees and Thursday."},
+  {kanji:"聞", furigana:"ぶん / き", meaning:"hear, listen", description:"Used in 聞く."},
+  {kanji:"食", furigana:"しょく / た", meaning:"eat, food", description:"Used in 食べる."},
+  {kanji:"車", furigana:"しゃ / くるま", meaning:"car", description:"Means car or vehicle."},
+  {kanji:"何", furigana:"なに / なん", meaning:"what", description:"Used for questions."},
+  {kanji:"南", furigana:"なん / みなみ", meaning:"south", description:"Means south."},
+  {kanji:"万", furigana:"まん", meaning:"ten thousand", description:"The number ten thousand."},
+  {kanji:"毎", furigana:"まい", meaning:"every", description:"Used in 毎日 and 毎週."},
+  {kanji:"白", furigana:"はく / しろ", meaning:"white", description:"Means white."},
+  {kanji:"天", furigana:"てん", meaning:"heaven, sky", description:"Used in 天気."},
+  {kanji:"母", furigana:"ぼ / はは", meaning:"mother", description:"Means mother."},
+  {kanji:"火", furigana:"か / ひ", meaning:"fire", description:"Used for fire and Tuesday."},
+  {kanji:"右", furigana:"う / みぎ", meaning:"right", description:"Means right side."},
+  {kanji:"読", furigana:"どく / よ", meaning:"read", description:"Used in 読む."},
+  {kanji:"友", furigana:"ゆう / とも", meaning:"friend", description:"Used in 友達."},
+  {kanji:"左", furigana:"さ / ひだり", meaning:"left", description:"Means left side."},
+  {kanji:"休", furigana:"きゅう / やす", meaning:"rest", description:"Used in 休む."},
+  {kanji:"父", furigana:"ふ / ちち", meaning:"father", description:"Means father."},
+  {kanji:"雨", furigana:"う / あめ", meaning:"rain", description:"Means rain."}
+];
+
+function showRandomKanji() {
+  const item = kanjiList[Math.floor(Math.random() * kanjiList.length)];
+
+  document.getElementById("kanji").textContent = item.kanji;
+  document.getElementById("furigana").textContent = item.furigana;
+  document.getElementById("meaning").textContent = item.meaning;
+  document.getElementById("description").textContent = item.description;
+}
+
+showRandomKanji();
+</script>
+
+</body>
+</html>
